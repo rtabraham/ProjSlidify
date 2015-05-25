@@ -1,0 +1,83 @@
+---
+title       : Predicting Risk of Coronary Heart Disease
+subtitle    : Uses Generalized Linear Model for Prediction
+author      : Ranjit Abraham 
+job         : Self-Employed Data Scientist
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Introduction
+
+1. Application enables to calculate prediction results (in percentage) for the 'Risk in Coronary Heart Disease in the coming 10 years' for user provided inputs.
+
+2. Provides a GUI for input data.
+
+3. Uses the Generalized Linear Regression to build the Predictive Model from a subset of the original "Framingham Coronary Heart Disease dataset". Details of Framingham Coronary Heart Disease may be obtained from this link --> https://www.framinghamheartstudy.org/ 
+
+4. The application hosted on Shiny Server has a GUI enabling reactive components (ie. automatic updating of results for user changed inputs).
+
+--- .class #id
+
+## Snapshot of Application in Shiny Server
+
+
+<div style='text-align: center;'>
+    <img height='560' src='x.png' />
+</div>
+
+---
+
+
+## DataSet
+
+
+The Training dataset is a subset of the "framingham coronary heart dataset". 
+The Generalized Linear Model is built using the response variable "TenYearCHD". 
+Only 7 out of the original 15 variables have been taken as the predictive variables.
+
+Below is shown details of the dataset used for building the predictive Model
+
+```{r, echo=FALSE, results='hold'}
+chd <- read.csv("E:/DM&Analytics/R/ShinyApp/chd.csv")
+str(chd)
+```
+
+--- 
+
+## DataSet- Variable Density Plot
+
+```{r, echo=FALSE}
+require(ggplot2)
+par(mfrow=c(3, 3))
+colnames <- dimnames(chd)[[2]]
+for (i in 1:8) {
+    d <- density(chd[,i])
+    plot(d, type="n", main=colnames[i])
+    polygon(d, col="red", border="gray")
+}
+```
+
+---
+
+##  Generalised Linear Model
+
+```{r, echo=FALSE}
+library(caTools)
+chdLog <- glm(TenYearCHD ~ .,data=chd, family="binomial")
+summary(chdLog)
+```
+
+---
+
+## Thank You
+
+
+Application at https://ranjit.shinyapps.io/ShinyApp/ 
+
+
+Thanks for Viewing
